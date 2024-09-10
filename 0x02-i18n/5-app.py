@@ -21,13 +21,16 @@ app.config['BABEL_SUPPORTED_LOCALES'] = ['en', 'fr']
 
 babel = Babel(app)
 
+
 # Define locale selector
 @babel.localeselector
 def get_locale():
     user = g.get('user', None)
     if user and user['locale']:
         return user['locale']
-    return request.accept_languages.best_match(app.config['BABEL_SUPPORTED_LOCALES'])
+    LOCALE = "app.config['BABEL_SUPPORTED_LOCALES']"
+    return request.accept_languages.best_match(LOCALE)
+
 
 # Function to get user based on login_as parameter
 def get_user():
@@ -37,10 +40,12 @@ def get_user():
         return users.get(user_id)
     return None
 
+
 # before_request function to set user globally
 @app.before_request
 def before_request():
     g.user = get_user()
+
 
 # Route for home page
 @app.route('/')
